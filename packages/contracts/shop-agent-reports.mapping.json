@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "description": "Index template for shop-agent-reports: free-text trip reports written by LLM shopping agents at the end of each run. report.text is embedded with Jina (via the Elastic Inference Service) for semantic friction search."
+  },
+  "index_patterns": [
+    "shop-agent-reports*"
+  ],
+  "priority": 200,
+  "template": {
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "session": {
+          "properties": {
+            "id": {
+              "type": "keyword"
+            }
+          }
+        },
+        "agent": {
+          "properties": {
+            "name": {
+              "type": "keyword"
+            },
+            "model": {
+              "type": "keyword"
+            },
+            "goal": {
+              "type": "text"
+            }
+          }
+        },
+        "outcome": {
+          "properties": {
+            "success": {
+              "type": "boolean"
+            },
+            "steps": {
+              "type": "integer"
+            },
+            "status": {
+              "type": "keyword"
+            }
+          }
+        },
+        "report": {
+          "properties": {
+            "text": {
+              "type": "semantic_text",
+              "inference_id": ".jina-embeddings-v5-text-small"
+            },
+            "raw": {
+              "type": "text"
+            },
+            "obstacles": {
+              "type": "keyword"
+            }
+          }
+        }
+      }
+    }
+  }
+}
