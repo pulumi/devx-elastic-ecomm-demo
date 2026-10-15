@@ -1,0 +1,24 @@
+{
+  "name": "elastic-ecomm-demo",
+  "private": true,
+  "version": "0.0.1",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "bash scripts/dev.sh",
+    "dev:web": "npm run dev -w apps/web",
+    "dev:api": "npm run dev -w apps/api",
+    "dev:deploy-hook": "npm run dev -w apps/deploy-hook",
+    "traffic": "npm start -w apps/traffic-gen --",
+    "content": "npm start -w apps/content-cli --",
+    "friction": "npm start -w apps/friction-report --",
+    "build": "npm run build -w apps/web && npm run build -w apps/api && npm run build -w apps/deploy-hook",
+    "lint": "npm run lint -w apps/web && npm run lint -w apps/api && npm run lint -w apps/deploy-hook && npm run lint -w apps/traffic-gen && npm run lint -w apps/content-cli && npm run lint -w apps/friction-report",
+    "test": "npm run test -w apps/web && npm run test -w apps/api && npm run test -w apps/deploy-hook && npm run test -w apps/traffic-gen && npm run test -w apps/content-cli && npm run test -w apps/friction-report"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

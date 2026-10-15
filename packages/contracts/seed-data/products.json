@@ -1,0 +1,82 @@
+[
+  {
+    "id": "prod_001",
+    "sku": "MUG-BLK-01",
+    "name": "Matte Black Ceramic Mug",
+    "description": "350ml double-walled ceramic mug with a soft-touch matte finish.",
+    "priceCents": 1800,
+    "currency": "USD",
+    "inventoryCount": 120,
+    "imageUrl": "/images/mug-black.jpg"
+  },
+  {
+    "id": "prod_002",
+    "sku": "TOTE-CNV-02",
+    "name": "Canvas Tote Bag",
+    "description": "Heavyweight 12oz canvas tote with reinforced straps.",
+    "priceCents": 2400,
+    "currency": "USD",
+    "inventoryCount": 80,
+    "imageUrl": "/images/tote.jpg"
+  },
+  {
+    "id": "prod_003",
+    "sku": "NOTE-A5-03",
+    "name": "Dot-Grid Notebook (A5)",
+    "description": "160-page dot-grid notebook with a rounded-corner hardcover.",
+    "priceCents": 1400,
+    "currency": "USD",
+    "inventoryCount": 200,
+    "imageUrl": "/images/notebook.jpg"
+  },
+  {
+    "id": "prod_004",
+    "sku": "BOT-STL-04",
+    "name": "Insulated Steel Water Bottle",
+    "description": "750ml vacuum-insulated bottle, keeps drinks cold 24h.",
+    "priceCents": 3200,
+    "currency": "USD",
+    "inventoryCount": 65,
+    "imageUrl": "/images/bottle.jpg"
+  },
+  {
+    "id": "prod_005",
+    "sku": "CNDL-SOY-05",
+    "name": "Soy Wax Candle — Cedar",
+    "description": "40-hour burn time, hand-poured soy wax, cedar & sandalwood scent.",
+    "priceCents": 2200,
+    "currency": "USD",
+    "inventoryCount": 90,
+    "imageUrl": "/images/candle.jpg"
+  },
+  {
+    "id": "prod_006",
+    "sku": "SOCK-WL-06",
+    "name": "Merino Wool Crew Socks (2-pack)",
+    "description": "Breathable merino wool blend, cushioned sole.",
+    "priceCents": 1600,
+    "currency": "USD",
+    "inventoryCount": 150,
+    "imageUrl": "/images/socks.jpg"
+  },
+  {
+    "id": "prod_007",
+    "sku": "PLNT-SUC-07",
+    "name": "Mini Succulent Trio",
+    "description": "Three low-maintenance succulents in matching terracotta pots.",
+    "priceCents": 2600,
+    "currency": "USD",
+    "inventoryCount": 40,
+    "imageUrl": "/images/succulents.jpg"
+  },
+  {
+    "id": "prod_008",
+    "sku": "PEN-BRS-08",
+    "name": "Brass Bullet Pen",
+    "description": "Compact solid-brass pen that develops a unique patina over time.",
+    "priceCents": 2800,
+    "currency": "USD",
+    "inventoryCount": 55,
+    "imageUrl": "/images/pen.jpg"
+  }
+]

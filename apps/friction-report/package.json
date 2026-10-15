@@ -1,0 +1,20 @@
+{
+  "name": "@shopfront/friction-report",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Ranks where AI agents hit friction in the shop, using Elastic-hosted Jina reranking and semantic search over agent trip reports.",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "tsx": "^4.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
+  }
+}

@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+.env
+.env.local
+*.log
+.DS_Store
+coverage/
+*.sqlite
+*.sqlite-*
+.dev-logs/
+reports/
+infra/pulumi/bin/
+.env.demo
+demo/out/
+.pulumi-logs/
+demo/.smooth_scroll

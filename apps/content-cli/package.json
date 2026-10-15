@@ -1,0 +1,22 @@
+{
+  "name": "@shopfront/content-cli",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Populate the Shopfront catalogue: import, export, seed, clear, or generate products with Claude.",
+  "bin": { "shopfront-content": "src/cli.ts" },
+  "scripts": {
+    "start": "tsx src/cli.ts",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
+    "tsx": "^4.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "description": "Rule-based human/agent/bot classification for shopfront documents (traffic-classification-*, user-lifecycle-events-*, shop-friction-*). The API records raw request signals under traffic.signals.*; this pipeline turns them into traffic.classification, traffic.actor, traffic.confidence and traffic.reason. It never reads traffic.ground_truth, which exists only to score this classifier against synthetic traffic.",
+  "processors": [
+    {
+      "script": {
+        "description": "Ordered rules: declared agents first, then UA reputation, then behaviour (JS executed, browser fetch metadata, request rate).",
+        "lang": "painless",
+        "source": "Map t = ctx.containsKey('traffic') && ctx.traffic != null ? ctx.traffic : new HashMap(); ctx.traffic = t; Map s = t.containsKey('signals') && t.signals != null ? t.signals : new HashMap(); String ua = s.containsKey('ua_class') && s.ua_class != null ? s.ua_class : 'empty'; boolean declared = s.declared_agent == true; boolean rum = s.rum_present == true; boolean secFetch = s.sec_fetch_present == true; double rate = s.containsKey('rate') && s.rate != null ? ((Number) s.rate).doubleValue() : 0.0; String c; double conf; String reason; if (declared) { c = 'agent-known'; conf = 0.99; reason = 'declared-agent-header'; } else if (ua == 'agent') { c = 'agent-known'; conf = 0.95; reason = 'agent-user-agent'; } else if (ua == 'bot') { c = 'bot-confirmed'; conf = 0.95; reason = 'bot-user-agent'; } else if (rum) { c = 'human'; conf = rate > 60 ? 0.6 : 0.85; reason = 'javascript-executed'; } else if (ua == 'browser' && !secFetch) { c = 'agent-suspected'; conf = 0.7; reason = 'browser-ua-without-fetch-metadata'; } else if (ua == 'browser' && rate > 30) { c = 'agent-suspected'; conf = 0.6; reason = 'browser-ua-high-rate'; } else if (ua == 'browser') { c = 'human'; conf = 0.55; reason = 'browser-page-fetch'; } else if (ua == 'tool' || ua == 'empty') { c = 'bot-suspected'; conf = 0.7; reason = 'http-library-user-agent'; } else { c = 'bot-suspected'; conf = 0.5; reason = 'unrecognised'; } t.classification = c; t.confidence = conf; t.reason = reason; t.actor = c == 'human' ? 'human' : (c.startsWith('agent') ? 'agent' : 'bot');"
+      }
+    }
+  ],
+  "on_failure": [
+    { "set": { "field": "traffic.classification", "value": "unclassified" } },
+    { "set": { "field": "error.message", "value": "{{ _ingest.on_failure_message }}" } }
+  ]
+}

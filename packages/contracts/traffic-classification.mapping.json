@@ -1,0 +1,137 @@
+{
+  "_meta": {
+    "description": "Index template for the traffic-classification-* data stream: one document per shop request (API call or HTML page fetch). The API computes raw signals (traffic.signals.*); the traffic-classification ingest pipeline turns them into traffic.classification and traffic.actor.",
+    "fields": {
+      "traffic.request_kind": "api | page",
+      "traffic.actor": "Coarse label: human | agent | bot",
+      "traffic.classification": "human | agent-known | agent-suspected | bot-confirmed | bot-suspected",
+      "traffic.agent_name": "Declared (X-Agent-Name / Signature-Agent) or UA-derived agent product name",
+      "traffic.ground_truth": "Synthetic traffic only: the persona that generated the request (X-Synthetic-Persona). Never used by the classifier; used to score it.",
+      "traffic.signals.ua_class": "browser | agent | bot | tool | empty",
+      "traffic.signals.rate": "Requests in this session over the trailing 60s"
+    }
+  },
+  "index_patterns": [
+    "traffic-classification-*"
+  ],
+  "data_stream": {},
+  "priority": 200,
+  "template": {
+    "settings": {
+      "index.default_pipeline": "traffic-classification"
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "session": {
+          "properties": {
+            "id": {
+              "type": "keyword"
+            }
+          }
+        },
+        "client": {
+          "properties": {
+            "ip": {
+              "type": "ip"
+            }
+          }
+        },
+        "user_agent": {
+          "properties": {
+            "original": {
+              "type": "keyword"
+            }
+          }
+        },
+        "url": {
+          "properties": {
+            "path": {
+              "type": "keyword"
+            },
+            "query": {
+              "type": "keyword"
+            }
+          }
+        },
+        "http": {
+          "properties": {
+            "request": {
+              "properties": {
+                "method": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "response": {
+              "properties": {
+                "status_code": {
+                  "type": "short"
+                }
+              }
+            }
+          }
+        },
+        "event": {
+          "properties": {
+            "duration": {
+              "type": "long"
+            },
+            "kind": {
+              "type": "keyword"
+            }
+          }
+        },
+        "traffic": {
+          "properties": {
+            "request_kind": {
+              "type": "keyword"
+            },
+            "actor": {
+              "type": "keyword"
+            },
+            "classification": {
+              "type": "keyword"
+            },
+            "confidence": {
+              "type": "float"
+            },
+            "agent_name": {
+              "type": "keyword"
+            },
+            "reason": {
+              "type": "keyword"
+            },
+            "ground_truth": {
+              "type": "keyword"
+            },
+            "signals": {
+              "properties": {
+                "ua_class": {
+                  "type": "keyword"
+                },
+                "declared_agent": {
+                  "type": "boolean"
+                },
+                "rum_present": {
+                  "type": "boolean"
+                },
+                "sec_fetch_present": {
+                  "type": "boolean"
+                },
+                "session_header_present": {
+                  "type": "boolean"
+                },
+                "rate": {
+                  "type": "float"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

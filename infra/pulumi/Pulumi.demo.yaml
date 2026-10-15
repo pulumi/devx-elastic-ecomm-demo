@@ -1,0 +1,11 @@
+config:
+  elastic:esUrl: https://my-observability-project-d8817d.es.us-central1.gcp.elastic.cloud
+  elastic:kibanaUrl: https://my-observability-project-d8817d.kb.us-central1.gcp.elastic.cloud
+  elastic:apiKey:
+    secure: AAABAMFHiM7acBiJ1Bz3qSt1nVIcxlbNoV+B+d7gw/id01RMYSHF3PQTR0XcablmPAIlvSl6ePe2LMdMCB8GxUJS46lPFFJPG/Pg5AvisCV0XtytBbVQ5Ihg5zw=
+  aws:region: us-east-1
+  aws:defaultTags:
+    tags:
+      Owner: pyoakum@pulumi.com
+      project: shopfront
+  shopfront:deployAws: "true"

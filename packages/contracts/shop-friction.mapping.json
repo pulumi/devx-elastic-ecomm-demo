@@ -1,0 +1,147 @@
+{
+  "_meta": {
+    "description": "Index template for the shop-friction-* data stream: one document per moment a shopper hit a wall (404, zero search results, validation error, missing session header, retry after an error). Classified with the same pipeline so friction can be split by human vs agent.",
+    "fields": {
+      "friction.type": "not_found | zero_results | validation_error | missing_session | checkout_error | retry",
+      "traffic.request_kind": "api | page",
+      "traffic.actor": "Coarse label: human | agent | bot",
+      "traffic.classification": "human | agent-known | agent-suspected | bot-confirmed | bot-suspected",
+      "traffic.agent_name": "Declared (X-Agent-Name / Signature-Agent) or UA-derived agent product name",
+      "traffic.ground_truth": "Synthetic traffic only: the persona that generated the request (X-Synthetic-Persona). Never used by the classifier; used to score it.",
+      "traffic.signals.ua_class": "browser | agent | bot | tool | empty",
+      "traffic.signals.rate": "Requests in this session over the trailing 60s"
+    }
+  },
+  "index_patterns": [
+    "shop-friction-*"
+  ],
+  "data_stream": {},
+  "priority": 200,
+  "template": {
+    "settings": {
+      "index.default_pipeline": "traffic-classification"
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "session": {
+          "properties": {
+            "id": {
+              "type": "keyword"
+            }
+          }
+        },
+        "client": {
+          "properties": {
+            "ip": {
+              "type": "ip"
+            }
+          }
+        },
+        "user_agent": {
+          "properties": {
+            "original": {
+              "type": "keyword"
+            }
+          }
+        },
+        "url": {
+          "properties": {
+            "path": {
+              "type": "keyword"
+            },
+            "query": {
+              "type": "keyword"
+            }
+          }
+        },
+        "http": {
+          "properties": {
+            "request": {
+              "properties": {
+                "method": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "response": {
+              "properties": {
+                "status_code": {
+                  "type": "short"
+                }
+              }
+            }
+          }
+        },
+        "friction": {
+          "properties": {
+            "type": {
+              "type": "keyword"
+            },
+            "detail": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "search_query": {
+              "type": "keyword"
+            }
+          }
+        },
+        "traffic": {
+          "properties": {
+            "request_kind": {
+              "type": "keyword"
+            },
+            "actor": {
+              "type": "keyword"
+            },
+            "classification": {
+              "type": "keyword"
+            },
+            "confidence": {
+              "type": "float"
+            },
+            "agent_name": {
+              "type": "keyword"
+            },
+            "reason": {
+              "type": "keyword"
+            },
+            "ground_truth": {
+              "type": "keyword"
+            },
+            "signals": {
+              "properties": {
+                "ua_class": {
+                  "type": "keyword"
+                },
+                "declared_agent": {
+                  "type": "boolean"
+                },
+                "rum_present": {
+                  "type": "boolean"
+                },
+                "sec_fetch_present": {
+                  "type": "boolean"
+                },
+                "session_header_present": {
+                  "type": "boolean"
+                },
+                "rate": {
+                  "type": "float"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

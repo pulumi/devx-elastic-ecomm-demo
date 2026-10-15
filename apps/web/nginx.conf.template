@@ -1,0 +1,53 @@
+# Rendered by the nginx image's envsubst step at container start
+# (/etc/nginx/templates/*.template -> /etc/nginx/conf.d/). API_UPSTREAM is
+# "api:8787" under docker compose and "127.0.0.1:8787" on ECS, where both
+# containers share one task.
+server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location /api/ {
+        proxy_pass http://${API_UPSTREAM};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    # Catalogue admin (apps/content-cli). Guarded by INTERNAL_API_KEY in the API.
+    location /internal/ {
+        proxy_pass http://${API_UPSTREAM};
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    # Built JS/CSS and icons: served directly, not counted as page views.
+    location /assets/ {
+        try_files $uri =404;
+    }
+    location ~ ^/(favicon|icons)\.svg$ {
+        try_files $uri =404;
+    }
+
+    # Every other path is an HTML page fetch (the SPA shell). Each one is
+    # mirrored to the API so page fetches that never execute JavaScript
+    # (the typical agent) still show up in traffic analytics.
+    location / {
+        mirror /_mirror_page;
+        mirror_request_body off;
+        try_files $uri /index.html;
+    }
+
+    location = /_mirror_page {
+        internal;
+        proxy_pass http://${API_UPSTREAM}/_track/page;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+        proxy_set_header X-Original-URI $request_uri;
+        proxy_set_header X-Original-Method $request_method;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_connect_timeout 1s;
+        proxy_read_timeout 2s;
+    }
+}

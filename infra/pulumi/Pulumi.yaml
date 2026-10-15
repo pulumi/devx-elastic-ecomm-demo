@@ -1,0 +1,13 @@
+name: shopfront
+runtime:
+  name: nodejs
+  options:
+    packagemanager: npm
+description: >
+  Shopfront agent-vs-human demo: Elastic index templates, ingest pipeline and
+  Kibana dashboards on an existing Elastic project, plus the shop and a
+  scheduled traffic generator on AWS ECS Fargate.
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: shopfront
