@@ -15,13 +15,13 @@
     "@fastify/cors": "^9.0.1",
     "better-sqlite3": "^11.3.0",
     "elastic-apm-node": "^4.7.3",
-    "fastify": "^4.28.1"
+    "fastify": "^5.12.7"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.11",
     "@types/node": "^20.14.0",
     "tsx": "^4.19.1",
     "typescript": "^5.5.4",
-    "vitest": "^2.0.5"
+    "vitest": "^5.0.5"
   }
 }
